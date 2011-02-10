@@ -26,6 +26,8 @@ module Neutrino
         Config.from_file(Config.config_file) if File.exist?(Config.config_file)
         # Overrides from command-line
         Config.merge!(config)
+
+        Log.level = Neutrino::Client::Config.log_level
       end
     end
   end
