@@ -67,7 +67,7 @@ module Neutrino
 
       def self.report
         metrics = get_metrics
-        hostname = `hostname`
+        hostname = `hostname`.strip
         host_id = Digest::MD5.hexdigest(hostname).to_i(16);
 
         metrics.each do |m|
