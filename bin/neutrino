@@ -1,0 +1,9 @@
+#!/usr/bin/env ruby
+
+require 'neutrino/client'
+
+# ARGV = [ '-l', 'debug' ]
+c = Neutrino::Client::CLI.new
+c.run
+
+puts "Log Level is" + Neutrino::Client::Config[:log_level] # :debug
