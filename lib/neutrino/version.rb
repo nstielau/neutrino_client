@@ -1,3 +1,5 @@
-module Neutrino::Client
-  VERSION = "0.0.1"
+module Neutrino
+  module Client
+    VERSION = "0.0.1"
+  end
 end

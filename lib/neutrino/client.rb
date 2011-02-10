@@ -1,8 +1,10 @@
-require 'config'
-require 'cli'
+require 'neutrino/cli'
+require 'neutrino/config'
+require 'neutrino/log'
+require 'neutrino/reporter'
+require 'json'
 
 module Neutrino
   module Client
-    # Your code goes here...
   end
 end

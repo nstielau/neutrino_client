@@ -2,8 +2,7 @@
 
 require 'neutrino/client'
 
-# ARGV = [ '-l', 'debug' ]
 c = Neutrino::Client::CLI.new
 c.run
-
-puts "Log Level is" + Neutrino::Client::Config[:log_level] # :debug
+Neutrino::Client::Log.level = Neutrino::Client::Config.log_level
+Neutrino::Client::Report.report

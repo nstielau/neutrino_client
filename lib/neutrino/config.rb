@@ -1,10 +1,22 @@
+require 'mixlib/config'
+
 module Neutrino
   module Client
     class Config
       extend(Mixlib::Config)
 
-      log_level   :info
-      config_file "/etc/neutrino.rb"
+      metadata {}
+
+      def self.defaults!
+        self.configuration = {}
+        configure do |c|
+           c[:metadata] = {}
+         end
+         log_level :info
+         config_file "/etc/neutrino.rb"
+      end
+
+      Config.defaults!
     end
   end
 end
