@@ -1,4 +1,4 @@
-require 'mixlib/config'
+require 'mixlib/log'
 
 module Neutrino
   module Client
