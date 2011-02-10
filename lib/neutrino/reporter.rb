@@ -12,7 +12,7 @@ module Neutrino
 
       def self.record(result)
         Log.debug(result.to_json)
-        #`curl --silent -X POST -H 'Content-Type: application/json' -d '#{result.to_json}' http://neutrino2.heroku.com/record`
+        `curl --silent -X POST -H 'Content-Type: application/json' -d '#{result.to_json}' http://neutrino2.heroku.com/record`
       end
 
       def self.get_metrics
