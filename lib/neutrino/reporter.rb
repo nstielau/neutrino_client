@@ -1,10 +1,13 @@
 require 'digest/md5'
+require 'open3'
 
 module Neutrino
   module Client
     class Reporter
       def self.get_value(cmd)
-        `#{cmd}`.strip
+        Open3.popen3(cmd) do |stdin, stdout, stderr, wait_thr|
+          stdout.read.strip
+        end
       end
 
       def self.record(result)
