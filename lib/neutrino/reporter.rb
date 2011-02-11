@@ -70,7 +70,7 @@ module Neutrino
           m.base_metadata = Config.metadata
           begin
             Reporter.record(m)
-          rescue => e
+          rescue StandardError => e
             Log.warn("Error running #{m.name}: #{e}")
           end
         end
