@@ -1,4 +1,5 @@
 require 'hashie'
+require 'digest/md5'
 
 module Neutrino
   module Client

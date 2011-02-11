@@ -8,19 +8,11 @@ module Neutrino
       def setup
         Config.defaults!
         Config[:metadata] = {:datacenter => "EC2"}
-        Reporter.stubs(:get_value).returns("3.14159")
       end
 
-      def test_reporter_records_metrics
+      def test_reporter_should_call_record_one_per_metric
         metrics = Reporter.get_metrics
-        metrics.each do |m|
-          Reporter.expects(:record).with() do |param|
-            !param.hostname.nil? &&
-            param.type = m.type &&
-            param.group == m.group &&
-            param.base_metadata == Config.metadata
-          end
-        end
+        Reporter.expects(:record).times(metrics.length)
         Reporter.report
       end
     end

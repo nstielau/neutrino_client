@@ -17,7 +17,7 @@ module Neutrino
       def test_metric_attributes
         attrs = {
           :name => "Load Avg (15m)",
-          :value => Reporter.get_value("cat /proc/loadavg | awk '{print $3}'"),
+          :value => 747,
           :group => "system",
           :type => 'load',
           :display_options => {:width => 100}
