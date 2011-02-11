@@ -1,3 +1,5 @@
+require 'httparty'
+
 module Neutrino
   module Client
     class Reporter
@@ -71,7 +73,7 @@ module Neutrino
           begin
             Reporter.record(m)
           rescue StandardError => e
-            Log.warn("Error running #{m.name}: #{e}")
+            Log.warn("Error running '#{m.name}': #{e}")
           end
         end
       end
