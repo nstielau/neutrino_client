@@ -9,7 +9,7 @@ module Neutrino
       end
 
       def test_log_level_defaults_to_info
-        assert_equal(:info, Config.log_level)
+        assert_equal(:warn, Config.log_level)
       end
 
       def test_metadata_defaults_to_empty_hash

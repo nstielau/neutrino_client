@@ -12,7 +12,7 @@ module Neutrino
         configure do |c|
            c[:metadata] = {}
          end
-         log_level :info
+         log_level :warn
          config_file "/etc/neutrino.rb"
       end
 
