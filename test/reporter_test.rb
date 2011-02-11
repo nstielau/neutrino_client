@@ -1,6 +1,7 @@
 require "neutrino/client"
 require "test/unit"
 require 'mocha'
+require 'fakeweb'
 
 module Neutrino
   module Client
@@ -8,11 +9,21 @@ module Neutrino
       def setup
         Config.defaults!
         Config[:metadata] = {:datacenter => "EC2"}
+        ShellMetric.stubs(:execute).returns(3.14159)
+
+        FakeWeb.allow_net_connect = false
       end
 
       def test_reporter_should_call_record_one_per_metric
         metrics = Reporter.get_metrics
         Reporter.expects(:record).times(metrics.length)
+        Reporter.report
+      end
+
+      def test_reporter_swallows_errors_and_logs_warnings
+        Open3.stubs(:popen3).returns('')
+        metrics = Reporter.get_metrics
+        Log.expects(:warn).times(metrics.length)
         Reporter.report
       end
     end

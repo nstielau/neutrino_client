@@ -3,8 +3,9 @@ module Neutrino
     class Reporter
 
       def self.record(metric)
-        Log.debug("Recording: #{metric.to_json}")
-        `curl --silent -X POST -H 'Content-Type: application/json' -d '#{metric.to_json}' http://neutrino2.heroku.com/record`
+        Log.info("Recording: #{metric.to_json}")
+        HTTParty.post('http://neutrino2.heroku.com/record', :body => metric.to_json)
+        # `curl --silent -X POST -H 'Content-Type: application/json' -d '#{metric.to_json}' http://neutrino2.heroku.com/record`
       end
 
       def self.get_metrics
@@ -54,6 +55,12 @@ module Neutrino
             :group => "system",
             :type => 'load'
           }),
+          ShellMetric.new({
+            :name => "Process Count",
+            :command => "ps aux | wc -l",
+            :group => "system",
+            :type => 'process'
+          })
         ]
       end
 
@@ -61,7 +68,11 @@ module Neutrino
         get_metrics.each do |m|
           m.hostname = `hostname`.strip
           m.base_metadata = Config.metadata
-          Reporter.record(m)
+          begin
+            Reporter.record(m)
+          rescue => e
+            Log.warn("Error running #{m.name}: #{e}")
+          end
         end
       end
     end

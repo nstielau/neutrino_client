@@ -6,13 +6,17 @@ module Neutrino
       property :command
 
       def self.execute(command)
-        Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
-          r = stdout.read.strip
+        parsed_value = Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
+          stdout.read.strip
         end
+        raise StandardError.new("Could not parse a value from '#{command}'. Got '#{parsed_value}'") if parsed_value.nil? || parsed_value == ""
+        return parsed_value
       end
 
       def value
-        ShellMetric.execute(self.command)
+        v = ShellMetric.execute(self.command)
+        Log.debug("#{self.command} returns '#{v}'")
+        v
       end
     end
   end
