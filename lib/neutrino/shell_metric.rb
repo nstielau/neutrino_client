@@ -13,8 +13,10 @@ module Neutrino
         return parsed_value
       end
 
-      def execute
-        self.value = ShellMetric.execute(self.command)
+      def value
+        v = ShellMetric.execute(self.command)
+        Log.debug("#{self.command} returns '#{v}'")
+        v
       end
     end
   end

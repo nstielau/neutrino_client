@@ -30,13 +30,13 @@ module Neutrino
             :type => "CPU",
             :display_options => {:min => 0, :max => 100}
           }),
-          ShellMetric.new({
-            :name => "Free Memory",
-            :command => "cat /proc/meminfo  | grep 'MemFree' | awk '{print $2}'",
-            :group => "system",
-            :type => 'memory',
-            :display_options => {:min => 0, :max => ShellMetric.execute("cat /proc/meminfo  | grep 'MemTotal' | awk '{print $2}'")}
-          }),
+          # ShellMetric.new({
+          #   :name => "Free Memory",
+          #   :command => "cat /proc/meminfo  | grep 'MemFree' | awk '{print $2}'",
+          #   :group => "system",
+          #   :type => 'memory',
+          #   :display_options => {:min => 0, :max => ShellMetric.execute("cat /proc/meminfo  | grep 'MemTotal' | awk '{print $2}'")}
+          # }),
           ShellMetric.new({
             :name => "Load Avg (1m)",
             :command => "cat /proc/loadavg | awk '{print $1}'",
@@ -69,9 +69,6 @@ module Neutrino
           m.hostname = `hostname`.strip
           m.base_metadata = Config.metadata
           begin
-            Log.warn("Executing")
-            m.execute
-            Log.warn("Executed, recording...")
             Reporter.record(m)
           rescue StandardError => e
             Log.warn("Error running #{m.name}: #{e}")
