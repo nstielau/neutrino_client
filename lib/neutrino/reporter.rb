@@ -69,6 +69,9 @@ module Neutrino
           m.hostname = `hostname`.strip
           m.base_metadata = Config.metadata
           begin
+            Log.warn("Executing")
+            m.execute
+            Log.warn("Executed, recording...")
             Reporter.record(m)
           rescue StandardError => e
             Log.warn("Error running #{m.name}: #{e}")

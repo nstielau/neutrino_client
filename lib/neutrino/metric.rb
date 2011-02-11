@@ -17,6 +17,9 @@ module Neutrino
         raise StandardError.new("Requires name and hostname") unless name && hostname
         Digest::MD5.hexdigest("#{name}#{hostname}")
       end
+      
+      def execute
+      end
 
       def to_json
         to_h.to_json
