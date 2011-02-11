@@ -7,12 +7,20 @@ module Neutrino
     class TestReporter < Test::Unit::TestCase
       def setup
         Config.defaults!
+        Config[:metadata] = {:datacenter => "EC2"}
         Reporter.stubs(:get_value).returns("3.14159")
       end
 
       def test_reporter_records_metrics
         metrics = Reporter.get_metrics
-        Reporter.expects(:record).times(metrics.length)
+        metrics.each do |m|
+          Reporter.expects(:record).with() do |param|
+            !param.hostname.nil? &&
+            param.type = m.type &&
+            param.group == m.group &&
+            param.base_metadata == Config.metadata
+          end
+        end
         Reporter.report
       end
     end
