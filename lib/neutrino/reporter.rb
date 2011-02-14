@@ -11,7 +11,7 @@ module Neutrino
       end
 
       def self.get_metrics
-        [
+        ms = [
           ShellMetric.new({
             :name => "CPU Steal",
             :command => "iostat | grep -A1 avg-cpu | tail -1 | awk '{print $5}'",
@@ -64,6 +64,8 @@ module Neutrino
             :type => 'process'
           })
         ]
+        Dir.glob(Config.munin_plugin_globs).each{|plugin_path| ms << MuninMetric.new(:munin_plugin_path => plugin_path)}
+        ms
       end
 
       def self.report

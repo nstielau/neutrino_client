@@ -24,7 +24,7 @@ module Neutrino
 
       def to_h
         {
-          :metadata => base_metadata.merge({
+          :metadata => (base_metadata || {}).merge({
             :name => self.name,
             :group => self.group,
             :type => self.type

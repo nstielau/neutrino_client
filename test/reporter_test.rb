@@ -26,6 +26,14 @@ module Neutrino
         Log.expects(:warn).times(metrics.length)
         Reporter.report
       end
+
+      def test_reporter_adds_munin_plugins
+        Dir.expects(:glob).with("/somedir/*").returns(["/path1", "/path2"])
+        MuninMetric.expects(:new).with(:munin_plugin_path => "/path1").returns(Metric.new)
+        MuninMetric.expects(:new).with(:munin_plugin_path => "/path2").returns(Metric.new)
+        Config.munin_plugin_globs "/somedir/*"
+        Reporter.report
+      end
     end
   end
 end

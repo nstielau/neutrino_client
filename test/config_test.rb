@@ -19,6 +19,10 @@ module Neutrino
       def test_default_config_file
         assert_equal("/etc/neutrino.rb", Config.config_file)
       end
+
+      def test_default_munin_plugin_globs
+        assert_equal("", Config.munin_plugin_globs)
+      end
     end
   end
 end

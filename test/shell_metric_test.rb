@@ -13,7 +13,7 @@ module Neutrino
         cmd = "ps aux | wc -l"
         m = ShellMetric.new(:command => cmd)
         ShellMetric.expects(:execute).with(cmd)
-        m.execute
+        m.value
       end
 
       def test_executes_command
