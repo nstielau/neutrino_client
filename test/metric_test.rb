@@ -52,16 +52,6 @@ module Neutrino
         assert_equal metric.metric_id, Digest::MD5.hexdigest("#{name}#{hostname}")
       end
 
-      def test_metric_id_raises_without_hostname
-        metric = Metric.new(:name => "a_metric")
-        assert_raises(StandardError){ metric.metric_id }
-      end
-
-      def test_metric_id_raises_without_hostname
-        metric = Metric.new(:hostname => "a_metric.com")
-        assert_raises(StandardError){ metric.metric_id }
-      end
-
       def test_to_json_calls_to_h
         metric = Metric.new(:hostname => "a_metric.com", :name => "asdf")
         metric.expects(:to_h)
@@ -85,10 +75,46 @@ module Neutrino
         assert_equal result[:metadata][:name], attrs[:name]
         assert_equal result[:metadata][:group], attrs[:group]
         assert_equal result[:metadata][:type], attrs[:type]
+        assert_equal result[:metadata][:hostname], metric.hostname
         assert_equal result[:display_options], attrs[:display_options]
         assert_equal result[:values][:bval], 0.11
         assert_equal result[:name], metric.metric_id
       end
+
+      def test_metric_to_h_raises_without_hostname
+        attrs = {
+          :name => "Load Avg (15m)",
+          :values => {:bval => 0.11},
+          :group => "system",
+          :type => 'load',
+          :display_options => {:width => 100}
+        }
+        metric = Metric.new(attrs)
+        assert_raises(StandardError){ metric.to_h }
+      end
+
+      def test_metric_to_h_raises_without_name
+        attrs = {
+          :values => {:bval => 0.11},
+          :group => "system",
+          :type => 'load',
+          :display_options => {:width => 100}
+        }
+        metric = Metric.new(attrs)
+        assert_raises(StandardError){ metric.to_h }
+      end
+
+      def test_metric_to_h_raises_without_values
+        attrs = {
+          :name => "Load Avg (15m)",
+          :group => "system",
+          :type => 'load',
+          :display_options => {:width => 100}
+        }
+        metric = Metric.new(attrs)
+        assert_raises(StandardError){ metric.to_h }
+      end
+
     end
   end
 end

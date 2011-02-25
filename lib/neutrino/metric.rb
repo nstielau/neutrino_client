@@ -14,7 +14,6 @@ module Neutrino
       property :display_options
 
       def metric_id
-        raise StandardError.new("Requires name and hostname") unless name && hostname
         Digest::MD5.hexdigest("#{name}#{hostname}")
       end
 
@@ -23,11 +22,13 @@ module Neutrino
       end
 
       def to_h
+        raise StandardError.new("Requires name, values and hostname") unless name && hostname && values
         {
           :metadata => (base_metadata || {}).merge({
             :name => self.name,
             :group => self.group,
-            :type => self.type
+            :type => self.type,
+            :hostname => self.hostname
           }),
           :display_options => self.display_options,
           :name => self.metric_id,
