@@ -61,7 +61,7 @@ module Neutrino
           begin
             Reporter.record(m)
           rescue StandardError => e
-            Log.warn("Error running '#{m.name}': #{e}")
+            Log.warn("Error recording '#{m.inspect}': #{e}")
           end
         end
       end

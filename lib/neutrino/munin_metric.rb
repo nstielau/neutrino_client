@@ -16,6 +16,7 @@ module Neutrino
           stdout.read.strip
         end
         result = {}
+        Log.debug("#{command} outputs #{output}")
         output.to_s.split("\n").each do |line|
           whole_line, key, value = line.match(/(\S*) (.*)/).to_a
           key_parts = key.split(/\.|_/)
@@ -26,6 +27,7 @@ module Neutrino
             result[key_parts.first] = value
           end
         end
+        Log.debug("#{command} output is parsed as #{result.inspect}")
         result
       end
 
@@ -44,6 +46,7 @@ module Neutrino
           self.base_metadata["group"] = plugin_configuration["graph"]["category"]
           self.base_metadata["type"] = plugin_configuration["graph"]["vlabel"]
           self.base_metadata["name"] = plugin_configuration["graph"]["title"]
+          self.name = plugin_configuration["graph"]["title"]
         end
       end
 
