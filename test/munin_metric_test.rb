@@ -11,6 +11,7 @@ module Neutrino
 
       def test_properties
         path = "/path/to/plugin"
+        Open3.stubs(:popen3)
         m = MuninMetric.new(:munin_plugin_path => path)
         assert_equal m.munin_plugin_path, path
       end
@@ -42,8 +43,9 @@ module Neutrino
         assert_equal m["load"]["value"], "0.17"
       end
 
-      def test_configure
+      def test_configuring_sets_base_metadata
         path = "/some_plugin"
+        Open3.stubs(:popen3).with("#{path}")
         Open3.expects(:popen3).with("#{path} config").returns("graph_title Load average\ngraph_args --base 1000 -l 0\ngraph_vlabel load\ngraph_scale no\ngraph_category system\nload.label load\nload.warning 10\nload.critical 120\ngraph_info The load average of the machine describes how many processes are in the run-queue (scheduled to run \"immediately\").\nload.info Average load for the five minutes.\n")
         m = MuninMetric.new(:munin_plugin_path => path)
         assert_equal m.base_metadata["group"], "system"
@@ -51,12 +53,18 @@ module Neutrino
         assert_equal m.base_metadata["name"], "Load average"
       end
 
+      def test_instanciation_configures_and_queries
+        path = "/some_plugin"
+        Open3.stubs(:popen3).with("#{path}")
+        Open3.expects(:popen3).with("#{path} config")
+        MuninMetric.new(:munin_plugin_path => path)
+      end
+
       def test_query
         path = "/some_plugin"
         Open3.expects(:popen3).with("#{path} config").returns("")
         Open3.expects(:popen3).with(path).returns("load.value 123\n")
         m = MuninMetric.new(:munin_plugin_path => path)
-        m.query
         assert_equal m.values, {"load" => "123"}
       end
     end

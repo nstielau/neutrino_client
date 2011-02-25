@@ -8,7 +8,7 @@ module Neutrino
       def initialize(opts={})
         super(opts)
         configure
-        # query
+        query
       end
 
       def self.execute_and_parse(command)
@@ -16,7 +16,7 @@ module Neutrino
           stdout.read.strip
         end
         result = {}
-        output.split("\n").each do |line|
+        output.to_s.split("\n").each do |line|
           whole_line, key, value = line.match(/(\S*) (.*)/).to_a
           key_parts = key.split(/\.|_/)
           if key_parts.length == 2
