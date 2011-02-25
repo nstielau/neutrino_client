@@ -23,8 +23,8 @@ module Neutrino
 
       def to_h
         raise StandardError.new("Requires name") unless name
-        raise StandardError.new("Requires values") unless hostname
-        raise StandardError.new("Requires hostname") unless values
+        raise StandardError.new("Requires values") unless values
+        raise StandardError.new("Requires hostname") unless hostname
         {
           :metadata => (base_metadata || {}).merge({
             :name => self.name,
