@@ -19,7 +19,12 @@ module Neutrino
         Log.debug("#{command} outputs #{output}")
         output.to_s.split("\n").each do |line|
           whole_line, key, value = line.match(/(\S*) (.*)/).to_a
-          key_parts = key.split(/\.|_/)
+          key_parts = nil
+          if key.match("graph_")
+            key_parts = key.split(/_/)
+          else
+            key_parts = key.split(/\./)
+          end
           if key_parts.length == 2
             result[key_parts.first] ||= {}
             result[key_parts.first][key_parts.last] = value

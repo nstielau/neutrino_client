@@ -53,6 +53,14 @@ module Neutrino
         assert_equal m.base_metadata["name"], "Load average"
       end
 
+      def test_can_handle_memory_output
+        path = "/some_plugin"
+        output = "swap_cache.value 0\nswap.value 0\n"
+        Open3.stubs(:popen3).with("#{path} config").returns("")
+        Open3.stubs(:popen3).with("#{path}").returns(output)
+        m = MuninMetric.new(:munin_plugin_path => path)
+      end
+
       def test_instanciation_configures_and_queries
         path = "/some_plugin"
         Open3.stubs(:popen3).with("#{path}")
