@@ -57,7 +57,7 @@ module Neutrino
         Open3.expects(:popen3).with(path).returns("load.value 123\n")
         m = MuninMetric.new(:munin_plugin_path => path)
         m.query
-        assert_equal m.value, "123"
+        assert_equal m.values, {"load" => "123"}
       end
     end
   end

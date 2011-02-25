@@ -10,7 +10,7 @@ module Neutrino
       property :group
       property :type
       property :name
-      property :value
+      property :values
       property :display_options
 
       def metric_id
@@ -31,7 +31,7 @@ module Neutrino
           }),
           :display_options => self.display_options,
           :name => self.metric_id,
-          :value => self.value
+          :values => self.values || {}
         }
       end
     end

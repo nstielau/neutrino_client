@@ -50,8 +50,15 @@ module Neutrino
       def query
         plugin_query = MuninMetric.query_plugin(self.munin_plugin_path)
         begin
-        self.value = plugin_query.to_a.first[1]["value"]
-        rescue
+          values_hash = {}
+          plugin_query.to_a.each do ||
+            name = plugin_query.to_a.first[0]
+            val = plugin_query.to_a.first[1]["value"]
+            values_hash[name] = val
+          end
+          self.values = values_hash
+        rescue => e
+          Log.debug("Error querying munin: #{e}")
         end
       end
 

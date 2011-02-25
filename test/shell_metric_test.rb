@@ -11,9 +11,18 @@ module Neutrino
 
       def test_execute_calculates_value
         cmd = "ps aux | wc -l"
-        m = ShellMetric.new(:command => cmd)
+        m = ShellMetric.new(:commands => {:myval => cmd})
         ShellMetric.expects(:execute).with(cmd)
-        m.value
+        m.values
+      end
+
+      def test_creates_values_hash
+        m = ShellMetric.new(:commands => {:myval => "somecmd", :bval => "othercmd"})
+        ShellMetric.stubs(:execute).with("somecmd").returns(100)
+        ShellMetric.stubs(:execute).with("othercmd").returns(150)
+        values_hash = m.values
+        assert_equal values_hash[:myval], 100
+        assert_equal values_hash[:bval], 150
       end
 
       def test_executes_command
