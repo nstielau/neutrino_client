@@ -1,4 +1,4 @@
-require "neutrino/client"
+require "lib/neutrino/client"
 require "test/unit"
 require 'mocha'
 
