@@ -71,6 +71,16 @@ module Neutrino
         assert_equal m.values["swap"], 44
       end
 
+      def test_can_handle_no_values
+        path = "/some_plugin"
+        output = "swap_cache.value\nswap.value 44\n"
+        Open3.stubs(:popen3).with("#{path} config").returns("")
+        Open3.stubs(:popen3).with("#{path}").returns(output)
+        m = MuninMetric.new(:munin_plugin_path => path)
+        assert_equal m.values["swap_cache"], nil
+        assert m.values.keys.include? "swap_cache"
+      end
+
       def test_instanciation_configures_and_queries
         path = "/some_plugin"
         Open3.stubs(:popen3).with("#{path}")
@@ -83,7 +93,8 @@ module Neutrino
         Open3.expects(:popen3).with("#{path} config").returns("")
         Open3.expects(:popen3).with(path).returns("load.value 123\n")
         m = MuninMetric.new(:munin_plugin_path => path)
-        assert_equal m.values, {"load" => "123"}
+        assert m.values.keys.include? "load"
+        assert_equal m.values["load"], 123
       end
     end
   end

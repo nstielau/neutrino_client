@@ -19,6 +19,7 @@ module Neutrino
         Log.debug("#{command} outputs #{output}")
         output.to_s.split("\n").each do |line|
           whole_line, key, value = line.match(/(\S*) (.*)/).to_a
+          key = line.strip if key.nil? # Can be nil if no value is specified
           key_parts = nil
           if key.match("graph_")
             key_parts = key.split(/_/)
@@ -62,7 +63,7 @@ module Neutrino
           plugin_query.to_a.each do |metric|
             name = metric[0]
             val = metric[1]["value"]
-            values_hash[name] = val.to_f
+            values_hash[name] = val.nil? ? nil : val.to_f
           end
           self.values = values_hash
         rescue => e
