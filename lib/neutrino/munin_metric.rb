@@ -59,10 +59,10 @@ module Neutrino
         plugin_query = MuninMetric.query_plugin(self.munin_plugin_path)
         begin
           values_hash = {}
-          plugin_query.to_a.each do ||
-            name = plugin_query.to_a.first[0]
-            val = plugin_query.to_a.first[1]["value"]
-            values_hash[name] = val
+          plugin_query.to_a.each do |metric|
+            name = metric[0]
+            val = metric[1]["value"]
+            values_hash[name] = val.to_f
           end
           self.values = values_hash
         rescue => e

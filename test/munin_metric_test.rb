@@ -61,6 +61,16 @@ module Neutrino
         m = MuninMetric.new(:munin_plugin_path => path)
       end
 
+      def test_can_handle_multiple_values
+        path = "/some_plugin"
+        output = "swap_cache.value 33\nswap.value 44\n"
+        Open3.stubs(:popen3).with("#{path} config").returns("")
+        Open3.stubs(:popen3).with("#{path}").returns(output)
+        m = MuninMetric.new(:munin_plugin_path => path)
+        assert_equal m.values["swap_cache"], 33
+        assert_equal m.values["swap"], 44
+      end
+
       def test_instanciation_configures_and_queries
         path = "/some_plugin"
         Open3.stubs(:popen3).with("#{path}")
