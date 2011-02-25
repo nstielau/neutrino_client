@@ -5,6 +5,11 @@ module Neutrino
     class ShellMetric < Metric
       property :commands
 
+      def initialize(opts={})
+        super(opts)
+        query
+      end
+
       def self.execute(command)
         parsed_value = Open3.popen3(command) do |stdin, stdout, stderr, wait_thr|
           stdout.read.strip
@@ -14,12 +19,12 @@ module Neutrino
         return parsed_value
       end
 
-      def values
+      def query
         values_hash = {}
         self.commands.each_pair do |name, cmd|
           values_hash[name] = ShellMetric.execute(cmd)
         end
-        values_hash
+        self.values = values_hash
       end
     end
   end

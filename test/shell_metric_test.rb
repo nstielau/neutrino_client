@@ -9,25 +9,28 @@ module Neutrino
         Config.defaults!
       end
 
+      def test_initialization_calls_query
+        ShellMetric.expects(:execute).with("somecmd").returns(100)
+        m = ShellMetric.new(:commands => {:myval => "somecmd"})
+      end
+
       def test_execute_calculates_value
         cmd = "ps aux | wc -l"
-        m = ShellMetric.new(:commands => {:myval => cmd})
         ShellMetric.expects(:execute).with(cmd)
-        m.values
+        m = ShellMetric.new(:commands => {:myval => cmd})
       end
 
       def test_creates_values_hash
-        m = ShellMetric.new(:commands => {:myval => "somecmd", :bval => "othercmd"})
         ShellMetric.stubs(:execute).with("somecmd").returns(100)
         ShellMetric.stubs(:execute).with("othercmd").returns(150)
-        values_hash = m.values
-        assert_equal values_hash[:myval], 100
-        assert_equal values_hash[:bval], 150
+        m = ShellMetric.new(:commands => {:myval => "somecmd", :bval => "othercmd"})
+        assert_equal m.values[:myval], 100
+        assert_equal m.values[:bval], 150
       end
 
       def test_executes_command
         cmd = "ps aux | wc -l"
-        Open3.expects(:popen3).with(cmd).returns(100)
+        Open3.expects(:popen3).with(cmd).returns("100")
         ShellMetric.execute(cmd)
       end
 
