@@ -6,8 +6,8 @@ module Neutrino
 
       def self.record(metric)
         Log.info("Recording: #{metric.to_json}")
-        HTTParty.post('http://neutrino2.heroku.com/record', :body => metric.to_json)
-        # `curl --silent -X POST -H 'Content-Type: application/json' -d '#{metric.to_json}' http://neutrino2.heroku.com/record`
+        response = HTTParty.post('http://neutrino2.heroku.com/record', :body => metric.to_h)
+        Log.debug "Response: body=#{response.body} code=#{response.code} message=#{response.message} headers=#{response.headers.inspect}"
       end
 
       def self.get_metrics
