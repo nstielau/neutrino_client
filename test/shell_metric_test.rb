@@ -28,15 +28,24 @@ module Neutrino
         assert_equal m.values[:bval], 150
       end
 
+      def test_reporter_logs_warnings_for_empty_output
+        cmd = "ps aux | wc -l"
+        Open3.stubs(:popen3).with(cmd).returns("")
+        Log.expects(:warn)
+        ShellMetric.execute(cmd)
+      end
+
+      def test_reporter_logs_debugs
+        cmd = "ps aux | wc -l"
+        Open3.stubs(:popen3).with(cmd).returns("100")
+        Log.expects(:debug)
+        ShellMetric.execute(cmd)
+      end
+
       def test_executes_command
         cmd = "ps aux | wc -l"
         Open3.expects(:popen3).with(cmd).returns("100")
         ShellMetric.execute(cmd)
-      end
-
-      def test_execute_raises_error_without_value
-        Open3.stubs(:popen3).returns('')
-        assert_raises(StandardError){ShellMetric.execute("some bogus command")}
       end
     end
   end

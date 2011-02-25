@@ -58,11 +58,7 @@ module Neutrino
         get_metrics.each do |m|
           m.hostname = `hostname`.strip
           m.base_metadata = Config.metadata
-          begin
-            Reporter.record(m)
-          rescue StandardError => e
-            Log.warn("Error recording '#{m.inspect}': #{e}")
-          end
+          Reporter.record(m)
         end
       end
     end

@@ -15,7 +15,7 @@ module Neutrino
           stdout.read.strip
         end
         Log.debug("'#{command}' outputs '#{parsed_value}'")
-        raise StandardError.new("Could not parse a value from \"#{command}\". Got '#{parsed_value}'") if parsed_value.nil? || parsed_value == ""
+        Log.warn("'#{command}' outputs '#{parsed_value}'") if parsed_value.nil? || parsed_value.empty?
         return parsed_value
       end
 
