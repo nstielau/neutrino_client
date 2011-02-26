@@ -21,7 +21,7 @@ module Neutrino
       end
 
       def test_default_munin_plugin_globs
-        assert_equal("", Config.munin_plugin_globs)
+        assert_equal("/etc/munin/plugins/**", Config.munin_plugin_globs)
       end
     end
   end
