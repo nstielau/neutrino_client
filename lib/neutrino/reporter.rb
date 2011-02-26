@@ -11,7 +11,7 @@ module Neutrino
       end
 
       def self.get_metrics
-        ms = [
+        metrics = [
           ShellMetric.new({
             :name => "User CPU",
             :commands => {:user => "iostat | grep -A1 avg-cpu | tail -1 | awk '{print $1}'"},
@@ -34,7 +34,7 @@ module Neutrino
             # :display_options => {:min => 0, :max => ShellMetric.execute("cat /proc/meminfo  | grep 'MemTotal' | awk '{print $2}'")}
           }),
           ShellMetric.new({
-            :name => "Load Avg (15m)",
+            :name => "Load Avg",
             :commands => {
               "1_min" => "cat /proc/loadavg | awk '{print $1}'",
               "5_min" => "cat /proc/loadavg | awk '{print $2}'",
@@ -50,8 +50,9 @@ module Neutrino
             :type => 'process'
           })
         ]
-        Dir.glob(Config.munin_plugin_globs).each{|plugin_path| ms << MuninMetric.new(:munin_plugin_path => plugin_path)}
-        ms
+        Config.plugins.each{|plugin| metrics << plugin}
+        Dir.glob(Config.munin_plugin_globs).each{|plugin_path| metrics << MuninMetric.new(:munin_plugin_path => plugin_path)}
+        metrics
       end
 
       def self.report

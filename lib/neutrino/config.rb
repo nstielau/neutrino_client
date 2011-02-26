@@ -15,6 +15,7 @@ module Neutrino
          log_level :warn
          config_file "/etc/neutrino.rb"
          munin_plugin_globs "/etc/munin/plugins/**"
+         plugins []
       end
 
       Config.defaults!
