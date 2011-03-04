@@ -78,7 +78,7 @@ module Neutrino
         assert_equal result[:metadata][:hostname], metric.hostname
         assert_equal result[:display_options], attrs[:display_options]
         assert_equal result[:values][:bval], 0.11
-        assert_equal result[:name], metric.metric_id
+        assert_equal result[:metric_id], metric.metric_id
       end
 
       def test_metric_to_h_raises_without_hostname

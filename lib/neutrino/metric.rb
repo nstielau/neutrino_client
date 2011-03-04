@@ -33,7 +33,7 @@ module Neutrino
             :hostname => self.hostname
           }),
           :display_options => self.display_options,
-          :name => self.metric_id,
+          :metric_id => self.metric_id,
           :values => self.values || {}
         }
       end
