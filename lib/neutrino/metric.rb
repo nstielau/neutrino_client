@@ -22,7 +22,7 @@ module Neutrino
       end
 
       def to_h
-        raise StandardError.new("Requires name") unless name
+        raise StandardError.new("Requires metric_id") unless metric_id
         raise StandardError.new("Requires values") unless values
         raise StandardError.new("Requires hostname") unless hostname
         {
