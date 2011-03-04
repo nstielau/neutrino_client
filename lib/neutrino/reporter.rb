@@ -5,9 +5,14 @@ module Neutrino
     class Reporter
 
       def self.record(metric)
-        Log.info("Recording: #{metric.to_json}")
-        response = HTTParty.post('http://neutrino2.heroku.com/record', :body => metric.to_h)
-        Log.debug "Response: body=#{response.body} code=#{response.code} message=#{response.message} headers=#{response.headers.inspect}"
+        Log.info("Recording: #{metric.inspect}")
+        Log.debug("Recording JSON: #{metric.to_json}")
+        begin
+          response = HTTParty.post('http://neutrino2.heroku.com/record', :body => metric.to_h)
+          Log.debug "Response: body=#{response.body} code=#{response.code} message=#{response.message} headers=#{response.headers.inspect}"
+        rescue => e
+          Log.error("Error sending #{metric.inspect}: #{e.inspect}")
+        end
       end
 
       def self.get_metrics
