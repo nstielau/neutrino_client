@@ -11,7 +11,7 @@ Gem::Specification.new do |s|
   s.summary     = "A client for sending metrics to Neutrino."
   s.description = "A client for sending metrics to Neutrino."
 
-  s.required_rubygems_version = ">= 1.3.6"
+  s.required_rubygems_version = ">= 1.3.5"
   s.rubyforge_project         = "neutrino_client"
 
   s.add_development_dependency "bundler", ">= 1.0.0"
