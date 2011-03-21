@@ -8,7 +8,7 @@ module Neutrino
         Log.info("Recording: #{metric.inspect}")
         Log.debug("Recording JSON: #{metric.to_json}")
         begin
-          response = HTTParty.post('http://neutrino2.heroku.com/record', :body => metric.to_h)
+          response = HTTParty.post("http://neutrino2.heroku.com/metrics/#{metric.metric_id}/record", :body => metric.to_h)
           Log.debug "Response: body=#{response.body} code=#{response.code} message=#{response.message} headers=#{response.headers.inspect}"
         rescue => e
           Log.error("Error sending #{metric.inspect}: #{e.inspect}")

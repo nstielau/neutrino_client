@@ -14,6 +14,7 @@ module Neutrino
       property :display_options
 
       def metric_id
+        raise StandardError.new("Generating a metric_id requires a name and hostname") unless name && hostname
         Digest::MD5.hexdigest("#{name}#{hostname}")
       end
 
@@ -22,7 +23,6 @@ module Neutrino
       end
 
       def to_h
-        raise StandardError.new("Requires metric_id") unless metric_id
         raise StandardError.new("Requires values") unless values
         raise StandardError.new("Requires hostname") unless hostname
         {
@@ -33,7 +33,6 @@ module Neutrino
             :hostname => self.hostname
           }),
           :display_options => self.display_options,
-          :metric_id => self.metric_id,
           :values => self.values || {}
         }
       end
